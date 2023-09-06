@@ -18,22 +18,51 @@ class LogLevel  {
 
 }
 
+class LogConfig{
 
-class Logger {
-    // set default value of level to be LogLevel.Debug for 
-    // every new instance
-     #level = LogLevel.Debug;
-    
-    
-    constructor(log_level){
-        // set log level only when provided
-        // else will be set by default to LogLevel.Debug
-        if (arguments.length){
-            // throw error if log_level is Unsupported
-            LogLevel.assert(log_level)
-            this.#level = log_level;
+    // log level
+    #level = LogLevel.Info;
+
+    // 
+    #rolling_config;
+
+    //prefix that will added to new files
+    #file_prefix = "Logtar_"
+
+    static assert(log_config){
+        // if there's an argument, check whether the `log_config` is an instance
+        // of the `LogConfig` class? If there's no argument, no checks required
+        //as we'll be using defaults.
+        if (arguments.length > 0 && !(log_config instanceof LogConfig)){
+            throw new Error(`log_config must be instance of LogConfig. Unsupported para ${JSON.stringify(log_config)}`)
         }
 
+    }
+
+    get level(){
+        return this.#level;
+    }
+
+    get rolling_config(){
+        return this.#rolling_config
+    }
+
+    get file_prefix(){
+        return this.#file_prefix
+    }
+}
+
+class Logger {
+    // set default value of level to be LogLevel.Infor for 
+    // every new instance
+     #config
+    
+    constructor(log_config){
+        // create config with the argument 
+        // if config not provided use default
+        log_config = log_config || LogConfig.wih_defaults()
+        LogConfig.assert(log_config)
+        this.#config = log_config
     }
     
     get level(){
