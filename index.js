@@ -39,6 +39,32 @@ class LogConfig{
 
     }
 
+    // build with default values
+    static with_defaults(){
+        return new LogConfig()
+    }
+    
+    // Validate the `log_level` argument, set it to the private `#level` variable
+    // and return this instance of the class back. So that other methods can mutate
+    // the same object, instead of creating a new one.
+    with_log_level(log_level){
+        LogLevel.assert(log_level);
+        this.#level = log_level;
+        return this;
+    }
+
+    with_rollling_config(rolling_config){
+        this.#rolling_config = RollingConfig.from_json(rolling_config)
+    }
+
+    with_file_prefix(file_prefix){
+        if (type of file_prefix != string){
+            throw new Error(`file_prefix must be a string. Unsupported param ${JSON.stringify(file_prefix)}`)
+        }
+        this.#file_prefix = file_prefix;
+        return this;
+    }
+
     get level(){
         return this.#level;
     }
