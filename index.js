@@ -47,6 +47,11 @@ class LogConfig{
     // Validate the `log_level` argument, set it to the private `#level` variable
     // and return this instance of the class back. So that other methods can mutate
     // the same object, instead of creating a new one.
+
+    /**
+     * @param {LogLevel} log_level to be set
+     * @returns {LogConfig} current instance
+     */
     with_log_level(log_level){
         LogLevel.assert(log_level);
         this.#level = log_level;
@@ -58,7 +63,7 @@ class LogConfig{
     }
 
     with_file_prefix(file_prefix){
-        if (type of file_prefix != string){
+        if (typeof file_prefix != string){
             throw new Error(`file_prefix must be a string. Unsupported param ${JSON.stringify(file_prefix)}`)
         }
         this.#file_prefix = file_prefix;
@@ -95,6 +100,28 @@ class Logger {
         return this.#level
     }
     }
+
+class RollingSizeOptions{
+    static OneKB = 1024;
+    static FiveKB = 5 * 1024;
+    static TenKB = 10 * 1024;
+    static TwentyKB = 20 * 1024;
+    static FiftyKB = 50 * 1024;
+    static HundredKB = 100 * 1024;
+    static HalfMB = 512 * 1024;
+    static OneMB = 1024 * 1024;
+    static FiveMB = 5 * 1024 * 1024;
+    static TenMB = 10 * 1024 * 1024;
+    static TwentyMB = 20 * 1024 * 1024;
+    static FiftyMB = 50 * 1024 * 1024;
+    static HundredMB = 100 * 1024 * 1024;
+
+    static assert(size_threshold){
+        if (typeof size_threshold !== number || size_threshold < RollingSizeOptions.OneKB ){
+            throw new Error(`size_threshold must be at least 1KB. Unsupported param ${JSON.stringify(size_threshold)}`)
+        }
+    }
+}
     
 const logger = new Logger(LogLevel.Info)
 console.log(logger.level)
