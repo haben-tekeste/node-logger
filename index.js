@@ -122,6 +122,24 @@ class RollingSizeOptions{
         }
     }
 }
+
+class RollingTimeOptions{
+    static Minutely = 60; // Every 60 seconds
+    static Hourly = 60 * this.Minutely;
+    static Daily = 24 * this.Hourly;
+    static Weekly = 7 * this.Daily;
+    static Monthly = 30 * this.Daily;
+    static Yearly = 12 * this.Monthly;
+
+    static assert(time_option){
+        if (![this.Minutely, this.Daily, this.Hourly, this.Monthly, this.Yearly].includes(time_option)){
+            throw new Error(`time_option must be an instance of RollingConfig. Unsupported params ${JSON.stringify(time_option)}`)
+        }
+    }
+
+}
+
+
     
 const logger = new Logger(LogLevel.Info)
 console.log(logger.level)
