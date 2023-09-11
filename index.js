@@ -1,2 +1,2 @@
-export * from "./lib/logtar"
+export * from "./lib/logtar.js"
 
