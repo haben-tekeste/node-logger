@@ -60,13 +60,13 @@ class LogConfig{
         return this;
     }
 
-    with_rollling_config(rolling_config){
+    with_rolling_config(rolling_config){
         this.#rolling_config = RollingConfig.from_json(rolling_config)
         return this;
     }
 
     with_file_prefix(file_prefix){
-        if (typeof file_prefix != string){
+        if (typeof file_prefix != "string"){
             throw new Error(`file_prefix must be a string. Unsupported param ${JSON.stringify(file_prefix)}`)
         }
         this.#file_prefix = file_prefix;
@@ -85,7 +85,7 @@ class LogConfig{
                     log_config = log_config.with_log_level(json[key])
                     break;
                  case "rolling_config":
-                    log_config = log_config.with_rolling_config(json[key])
+                    log_config = log_config.with_rolling_config[json[key]]
                     break;
                   case "file_prefix":
                     log_config = log_config.with_file_prefix(json[key])
