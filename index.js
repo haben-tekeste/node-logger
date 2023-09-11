@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 class LogLevel  {
     static Debug = 0;
     static Info = 1;
@@ -60,6 +62,7 @@ class LogConfig{
 
     with_rollling_config(rolling_config){
         this.#rolling_config = RollingConfig.from_json(rolling_config)
+        return this;
     }
 
     with_file_prefix(file_prefix){
@@ -69,6 +72,45 @@ class LogConfig{
         this.#file_prefix = file_prefix;
         return this;
     }
+
+    // build object from json
+    // i.e json = {level: LogLevel.Debug}
+    static from_json(json){
+        let log_config = new LogConfig();
+
+        // 
+        Object.keys(json).forEach((key) => {
+            switch (key) {
+                case "level":
+                    log_config = log_config.with_log_level(json[key])
+                    break;
+                 case "rolling_config":
+                    log_config = log_config.with_rolling_config(json[key])
+                    break;
+                  case "file_prefix":
+                    log_config = log_config.with_file_prefix(json[key])
+                    break;
+            }
+        })
+        return log_config
+    }
+
+    /** 
+    * @param {string} file_path The path to the config file.
+    * @returns {LogConfig} A new instance of LogConfig with values from the config file.
+    * @throws {Error} If the file_path is not a string.
+    */
+
+    static from_file(file_path){
+        // `fs.readFileSync` throws an error if the path is invalid.
+        // It takes care of the OS specific path handling for us. No need to
+        // validate paths by ourselves.
+        const file_contents = fs.readFileSync(file_path)
+
+        // call from_json method to handle It
+        return LogConfig.from_json(JSON.parse(file_contents))
+    }
+
 
     get level(){
         return this.#level;
@@ -97,8 +139,14 @@ class Logger {
     }
     
     get level(){
-        return this.#level
+        return this.#config.level
     }
+
+    static with_config(log_config){
+        return new Logger(log_config)
+
+    }
+
     }
 
 class RollingSizeOptions{
@@ -188,8 +236,8 @@ class RollingConfig{
     }
 }
 
-    
-const logger = new Logger(LogLevel.Info)
+const config = LogConfig.from_file("./config.demo.json")
+const logger = Logger.with_config(config)
 console.log(logger.level)
 
 export {LogLevel, Logger}
