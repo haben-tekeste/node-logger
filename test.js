@@ -5,3 +5,9 @@ console.log(logger.file_prefix)
 console.log(logger.time_threshold)
 console.log(logger.size_threshold)
 console.log(logger.level)
+
+logger.debug('Hello debug');
+logger.info('Hello info');
+logger.warn('Hello warning');
+logger.error('Hello error');
+logger.critical('Hello critical');
