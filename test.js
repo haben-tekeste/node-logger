@@ -1,4 +1,9 @@
 import {Logger, LogConfig} from "./index.js"
+import path from 'path'
+import { fileURLToPath } from 'url';
 
-const logger = Logger.with_config(LogConfig.from_file("./config.json"))
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
+
+const logger = Logger.with_config(LogConfig.from_file(path.join(__dirname,"./config.json")))
 await logger.init()
