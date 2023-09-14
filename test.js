@@ -15,6 +15,6 @@ async function main() {
     let logger = await initialize_logger()
    setInterval(()=>{
     logger.critical("hi there")
-   },20)
+   },1000)
     }
     main()
