@@ -13,14 +13,8 @@ async function initialize_logger(){
 
 async function main() {
     let logger = await initialize_logger()
-    logger.critical('From the main() function')
-    nested_func(logger)
-    }
-    function nested_func(logger) {
-    logger.critical('From the nested_func() function')
-    super_nested(logger)
-    }
-    function super_nested(logger) {
-    logger.critical('From the super_nested() function')
+   setInterval(()=>{
+    logger.critical("hi there")
+   },20)
     }
     main()
